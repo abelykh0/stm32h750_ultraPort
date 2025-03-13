@@ -30,9 +30,24 @@ extern "C" void setup()
 	if (f_mount(&SDFatFS, (TCHAR*)u"0:/", 1) == FR_OK)
 	{
 		FIL file;
-		if (f_open(&file, (const TCHAR*)u"0:/Keyboard720x400.bmp", FA_READ) == FR_OK)
+		if (f_open(&file, (const TCHAR*)u"sample_picture.jpg", FA_READ) == FR_OK)
 		{
 			f_close(&file);
+		}
+
+		DIR dir;
+		FRESULT res = f_opendir(&dir, "");
+
+		if (res == FR_OK)
+		{
+			while(1)
+			{
+				FILINFO fno;
+				res = f_readdir(&dir, &fno);
+
+				if ((res != FR_OK) || (fno.fname[0] == 0))
+				  break;
+			}
 		}
 
 		f_mount(nullptr, nullptr, 1);
