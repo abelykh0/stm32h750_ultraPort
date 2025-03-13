@@ -16,14 +16,16 @@ extern "C" void setup()
 {
 	HAL_GPIO_WritePin(ON_GPIO_Port, ON_Pin, GPIO_PIN_SET);
 
-	// QSPI Flash 8MB
+	// I2C Serial EEPROM 2K  (AT24C02_1)
+
+	// QSPI Flash 8MB (W25Q128JVSIM_TR)
 	MapFlash();
 
 	// Read from QSPI Flash
 	uint8_t data[16];
 	memcpy(data, (uint8_t*)QSPI_BASE, 16);
 
-	//HAL_GPIO_WritePin(LCD_BL_GPIO, LCD_BL_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(LCD_BL_GPIO_Port, LCD_BL_Pin, GPIO_PIN_SET);
 
 	if (f_mount(&SDFatFS, (TCHAR*)u"0:/", 1) == FR_OK)
 	{
