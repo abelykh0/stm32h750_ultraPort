@@ -52,16 +52,29 @@ extern "C" {
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
 void MX_QUADSPI_Init(void);
+void MX_LTDC_Init(void);
 
 /* USER CODE BEGIN EFP */
 
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define LCD_RST_Pin GPIO_PIN_3
+#define LCD_RST_GPIO_Port GPIOE
+#define USER_KEY_Pin GPIO_PIN_13
+#define USER_KEY_GPIO_Port GPIOC
 #define TF_DETECT_Pin GPIO_PIN_5
 #define TF_DETECT_GPIO_Port GPIOC
 #define LED_R_Pin GPIO_PIN_12
 #define LED_R_GPIO_Port GPIOB
+#define TP_SCL_Pin GPIO_PIN_12
+#define TP_SCL_GPIO_Port GPIOD
+#define TP_SDA_Pin GPIO_PIN_13
+#define TP_SDA_GPIO_Port GPIOD
+#define TP_RST_Pin GPIO_PIN_14
+#define TP_RST_GPIO_Port GPIOD
+#define TP_INT_Pin GPIO_PIN_15
+#define TP_INT_GPIO_Port GPIOD
 #define LCD_BL_Pin GPIO_PIN_6
 #define LCD_BL_GPIO_Port GPIOB
 #define ON_Pin GPIO_PIN_0
