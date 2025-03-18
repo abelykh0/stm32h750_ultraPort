@@ -3,9 +3,13 @@
 #include "usbd_desc.h"
 #include <stdio.h>
 
+#include "gpio.h"
+#include "i2c.h"
+#include "spi.h"
+#include "ltdc.h"
+
 #include "w25qxx_qspi.h"
 #include "fatfs.h"
-
 #include "config.h"
 #include "screen/lcd.h"
 #include "demo_colors/demo_colors.h"
@@ -15,9 +19,6 @@ uint8_t VideoRam[H_SIZE * V_SIZE];// __attribute__(( section(".sram2") ));
 
 // EEPROM AT24C02 2K
 #define EEPROM_ADDRESS 0xA0
-extern I2C_HandleTypeDef hi2c3;
-extern LTDC_HandleTypeDef hltdc;
-extern SPI_HandleTypeDef hspi4;
 
 static void MapFlash();
 static void PrepareClut();
@@ -25,13 +26,16 @@ static void LtdcInit();
 
 extern "C" void initialize()
 {
+	MX_GPIO_Init();
+
+	// This board requires this to keep running
+	HAL_GPIO_WritePin(ON_GPIO_Port, ON_Pin, GPIO_PIN_SET);
+
 	PrepareClut();
 }
 
 extern "C" void setup()
 {
-	HAL_GPIO_WritePin(ON_GPIO_Port, ON_Pin, GPIO_PIN_SET);
-
 	MapFlash();
 
 	LtdcInit();

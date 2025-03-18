@@ -5,6 +5,7 @@
 #endif
 
 #include "main.h"
+#include "quadspi.h"
 
 typedef enum
 {

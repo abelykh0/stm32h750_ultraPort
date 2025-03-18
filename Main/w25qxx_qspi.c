@@ -1,7 +1,5 @@
 #include "w25qxx_qspi.h"
 
-extern QSPI_HandleTypeDef hqspi;
-
 static uint32_t QSPI_EnableMemoryMappedMode(QSPI_HandleTypeDef *hqspi,uint8_t DTRMode);
 static uint32_t QSPI_ResetDevice(QSPI_HandleTypeDef *hqspi);
 static uint8_t QSPI_EnterQPI(QSPI_HandleTypeDef *hqspi);
