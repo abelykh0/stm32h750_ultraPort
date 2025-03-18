@@ -57,29 +57,37 @@ static void MapFlash()
 	w25qxx_Startup(w25qxx_NormalMode); // w25qxx_DTRMode
 }
 
+static uint32_t get8bitColor(uint8_t twoBitColor)
+{
+	switch (twoBitColor)
+	{
+	case 0x00:
+		return 0x00;
+	case 0x01:
+		return 0x55;
+	case 0x02:
+		return 0xaa;
+	default:
+		return 0xff;
+	}
+}
 
 static void PrepareClut()
 {
 	for (uint32_t i = 0; i < 256; i++)
 	{
-		// xxBBGGRR > ARBG
-		uint32_t a = 0xff000000;
+		// xxBBGGRR > ARGB
 
-		// R3,R4
-		uint32_t paletteR = i & 0x0003;
-		uint32_t r = paletteR << 3;
-		r <<= 16;
+		// R5
+		uint32_t r = get8bitColor(i & 0x0003);
 
-		// G3,G4
-		uint32_t paletteG = i & 0x000C;
-		uint32_t g = paletteG << 1; // >> 2 << 3
-		g <<= 8;
+		// G6
+		uint32_t g = get8bitColor((i & 0x000C) >> 2);
 
-		// B2,B3
-		uint32_t paletteB = i & 0x0030;
-		uint32_t b = paletteB >> 2; // >> 4 << 2
+		// B5
+		uint32_t b = get8bitColor((i & 0x0030) >> 4);
 
-		L8Clut[i] = a | r | g | b;
+		L8Clut[i] = 0xff000000 | (r << 0x10) | (g << 0x8) | b;
 	}
 }
 
