@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "stm32h7xx_hal.h"
+#include "rtc.h"
 
 #include "demo_colors.h"
 #include "screen/screen.h"
@@ -42,3 +43,19 @@ void init_demo_colors()
 
 	screen.SetAttribute(0x3F10);
 }
+
+int32_t loop_demo_colors()
+{
+	char showTime[20];
+
+	RTC_DateTypeDef dateStruct;
+	RTC_TimeTypeDef timeStruct;
+	HAL_RTC_GetTime(&hrtc, &timeStruct, RTC_FORMAT_BIN);
+	HAL_RTC_GetDate(&hrtc, &dateStruct, RTC_FORMAT_BIN); // important
+	sprintf(showTime, " %.2d:%.2d:%.2d ", timeStruct.Hours, timeStruct.Minutes, timeStruct.Seconds);
+    screen.PrintAlignCenter(0, showTime);
+
+	return 0;
+}
+
+

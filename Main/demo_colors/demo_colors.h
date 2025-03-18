@@ -17,6 +17,7 @@ extern "C" {
 #endif
 
 void init_demo_colors();
+int32_t loop_demo_colors();
 
 #ifdef __cplusplus
 }

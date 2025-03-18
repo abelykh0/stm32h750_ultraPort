@@ -46,12 +46,15 @@ extern "C" void setup()
 
 extern "C" void loop()
 {
+    //MX_USB_HOST_Process();
+
 	//GPIO_PinState state = HAL_GPIO_ReadPin(USER_KEY_GPIO_Port, USER_KEY_Pin);
 	//HAL_GPIO_WritePin(LED_R_GPIO_Port, LED_R_Pin, state);
 	//HAL_Delay (10);
 
 	HAL_GPIO_TogglePin(LED_R_GPIO_Port, LED_R_Pin);
 	HAL_Delay (1000);
+	loop_demo_colors();
 }
 
 static void MapFlash()
