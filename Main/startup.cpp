@@ -7,6 +7,7 @@
 #include "fatfs.h"
 
 #include "config.h"
+#include "screen/lcd.h"
 #include "demo_colors/demo_colors.h"
 
 static uint32_t L8Clut[256];
@@ -41,13 +42,12 @@ extern "C" void setup()
 
 extern "C" void loop()
 {
-	GPIO_PinState state = HAL_GPIO_ReadPin(USER_KEY_GPIO_Port, USER_KEY_Pin);
-	HAL_GPIO_WritePin(LED_R_GPIO_Port, LED_R_Pin, state);
-	HAL_Delay (10);
+	//GPIO_PinState state = HAL_GPIO_ReadPin(USER_KEY_GPIO_Port, USER_KEY_Pin);
+	//HAL_GPIO_WritePin(LED_R_GPIO_Port, LED_R_Pin, state);
+	//HAL_Delay (10);
 
-	//HAL_GPIO_TogglePin(LED_R_GPIO_Port, LED_R_Pin);
-	//HAL_GPIO_TogglePin(LED_G_GPIO_Port, LED_G_Pin);
-	//HAL_Delay (1000);
+	HAL_GPIO_TogglePin(LED_R_GPIO_Port, LED_R_Pin);
+	HAL_Delay (1000);
 }
 
 static void MapFlash()
@@ -85,27 +85,15 @@ static void PrepareClut()
 
 static void LtdcInit()
 {
-	// LCD Back light
-	HAL_GPIO_WritePin(LCD_BL_GPIO_Port, LCD_BL_Pin, GPIO_PIN_SET);
-
-	// LCD_RST
-	HAL_GPIO_WritePin(LCD_RST_GPIO_Port, LCD_RST_Pin, GPIO_PIN_SET);
-
-	// ???
-	/*
-	uint8_t cmd = 0x11;
-	HAL_SPI_Transmit(&hspi4, &cmd, 1, HAL_MAX_DELAY);
-	HAL_Delay(120);
-	cmd = 0x29;
-	HAL_SPI_Transmit(&hspi4, &cmd, 1, HAL_MAX_DELAY);
-	*/
+	lcd_init();
+	lcd_bl_on();
 
 	LTDC_LayerCfgTypeDef pLayerCfg = {0};
 	hltdc.Instance = LTDC;
 
 	LTDC_InitTypeDef* init = &hltdc.Init;
 	init->DEPolarity = LTDC_DEPOLARITY_AL;
-	init->PCPolarity = LTDC_PCPOLARITY_IPC;
+	init->PCPolarity = LTDC_PCPOLARITY_IIPC;
 	init->Backcolor.Blue = 0xFF;
 	init->Backcolor.Green = 0;
 	init->Backcolor.Red = 0;

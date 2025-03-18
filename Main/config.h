@@ -9,9 +9,9 @@
 #define BORDER_COLOR 0x30 // ..BBGGRR
 extern uint8_t VideoRam[H_SIZE * V_SIZE];
 
-// Pixel clock 10.2 MHz
+// Pixel clock 10.2 MHz // 11.875 MHz
 #define VIDEO_MODE_PLL3M 5
-#define VIDEO_MODE_PLL3N 102
+#define VIDEO_MODE_PLL3N 100
 #define VIDEO_MODE_PLL3R 50
 #define VIDEO_MODE_PLL3RGE RCC_PLL3VCIRANGE_2
 

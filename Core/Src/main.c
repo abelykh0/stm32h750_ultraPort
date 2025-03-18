@@ -318,18 +318,18 @@ void MX_LTDC_Init(void)
 
   /* USER CODE END LTDC_Init 1 */
   hltdc.Instance = LTDC;
-  hltdc.Init.HSPolarity = LTDC_HSPOLARITY_AH;
-  hltdc.Init.VSPolarity = LTDC_VSPOLARITY_AH;
-  hltdc.Init.DEPolarity = LTDC_DEPOLARITY_AH;
-  hltdc.Init.PCPolarity = LTDC_PCPOLARITY_IPC;
+  hltdc.Init.HSPolarity = LTDC_HSPOLARITY_AL;
+  hltdc.Init.VSPolarity = LTDC_VSPOLARITY_AL;
+  hltdc.Init.DEPolarity = LTDC_DEPOLARITY_AL;
+  hltdc.Init.PCPolarity = LTDC_PCPOLARITY_IIPC;
   hltdc.Init.HorizontalSync = 1;
   hltdc.Init.VerticalSync = 1;
   hltdc.Init.AccumulatedHBP = 4;
   hltdc.Init.AccumulatedVBP = 4;
-  hltdc.Init.AccumulatedActiveW = 484;
-  hltdc.Init.AccumulatedActiveH = 324;
-  hltdc.Init.TotalWidth = 499;
-  hltdc.Init.TotalHeigh = 339;
+  hltdc.Init.AccumulatedActiveW = 324;
+  hltdc.Init.AccumulatedActiveH = 484;
+  hltdc.Init.TotalWidth = 339;
+  hltdc.Init.TotalHeigh = 499;
   hltdc.Init.Backcolor.Blue = 255;
   hltdc.Init.Backcolor.Green = 0;
   hltdc.Init.Backcolor.Red = 0;
@@ -507,17 +507,17 @@ static void MX_SPI4_Init(void)
   hspi4.Instance = SPI4;
   hspi4.Init.Mode = SPI_MODE_MASTER;
   hspi4.Init.Direction = SPI_DIRECTION_1LINE;
-  hspi4.Init.DataSize = SPI_DATASIZE_8BIT;
+  hspi4.Init.DataSize = SPI_DATASIZE_9BIT;
   hspi4.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi4.Init.CLKPhase = SPI_PHASE_1EDGE;
-  hspi4.Init.NSS = SPI_NSS_HARD_INPUT;
-  hspi4.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
+  hspi4.Init.NSS = SPI_NSS_SOFT;
+  hspi4.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
   hspi4.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi4.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi4.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
   hspi4.Init.CRCPolynomial = 0x0;
-  hspi4.Init.NSSPMode = SPI_NSS_PULSE_ENABLE;
-  hspi4.Init.NSSPolarity = SPI_NSS_POLARITY_HIGH;
+  hspi4.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
+  hspi4.Init.NSSPolarity = SPI_NSS_POLARITY_LOW;
   hspi4.Init.FifoThreshold = SPI_FIFO_THRESHOLD_01DATA;
   hspi4.Init.TxCRCInitializationPattern = SPI_CRC_INITIALIZATION_ALL_ZERO_PATTERN;
   hspi4.Init.RxCRCInitializationPattern = SPI_CRC_INITIALIZATION_ALL_ZERO_PATTERN;
@@ -557,7 +557,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOE, LCD_RST_Pin|ON_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOE, LCD_RST_Pin|LCD_CS_Pin|ON_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, LED_R_Pin|LCD_BL_Pin, GPIO_PIN_RESET);
@@ -571,6 +571,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LCD_RST_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : LCD_CS_Pin */
+  GPIO_InitStruct.Pin = LCD_CS_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
+  HAL_GPIO_Init(LCD_CS_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : USER_KEY_Pin TF_DETECT_Pin */
   GPIO_InitStruct.Pin = USER_KEY_Pin|TF_DETECT_Pin;
