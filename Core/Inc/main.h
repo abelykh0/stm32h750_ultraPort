@@ -61,8 +61,6 @@ void MX_LTDC_Init(void);
 /* Private defines -----------------------------------------------------------*/
 #define LCD_RST_Pin GPIO_PIN_3
 #define LCD_RST_GPIO_Port GPIOE
-#define LCD_CS_Pin GPIO_PIN_4
-#define LCD_CS_GPIO_Port GPIOE
 #define USER_KEY_Pin GPIO_PIN_13
 #define USER_KEY_GPIO_Port GPIOC
 #define TF_DETECT_Pin GPIO_PIN_5

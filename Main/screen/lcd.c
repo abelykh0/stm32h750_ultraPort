@@ -4,7 +4,6 @@ extern SPI_HandleTypeDef hspi4;
 #define LCD_SPI &hspi4
 
 #define LCD_RST(x) HAL_GPIO_WritePin(LCD_RST_GPIO_Port, LCD_RST_Pin, (GPIO_PinState)x)
-#define LCD_SPI_CS(x) HAL_GPIO_WritePin(LCD_CS_GPIO_Port, LCD_CS_Pin, (GPIO_PinState)x)
 #define LCD_delay HAL_Delay
 
 void lcd_bl_on()
@@ -23,24 +22,18 @@ static void LCD_Reset(void)
 static void SPI_WriteComm(uint16_t cmd)
 {
     uint16_t data = 0x000 | cmd;
-    LCD_SPI_CS(0);
     HAL_SPI_Transmit(LCD_SPI, (uint8_t *)&data, 1, 0xff);
-    LCD_SPI_CS(1);
 }
 static void SPI_WriteData(uint16_t data)
 {
     uint16_t d = 0x100 | data;
-    LCD_SPI_CS(0);
     HAL_SPI_Transmit(LCD_SPI, (uint8_t *)&d, 1, 0xff);
-    LCD_SPI_CS(1);
 }
 
 // ILI9481
 void lcd_init(void)
 {
-    LCD_SPI_CS(1);
     LCD_delay(20);
-    LCD_SPI_CS(0);
     LCD_Reset();
 
     SPI_WriteComm(0x11); // exit_sleep_mode
