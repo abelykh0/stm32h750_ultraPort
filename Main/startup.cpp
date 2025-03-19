@@ -8,6 +8,7 @@
 #include "spi.h"
 #include "ltdc.h"
 #include "usb_host.h"
+#include "usbh_hid.h"
 
 #include "w25qxx_qspi.h"
 #include "fatfs.h"
@@ -53,9 +54,9 @@ extern "C" void loop()
 	//HAL_GPIO_WritePin(LED_R_GPIO_Port, LED_R_Pin, state);
 	//HAL_Delay (10);
 
-	HAL_GPIO_TogglePin(LED_R_GPIO_Port, LED_R_Pin);
-	HAL_Delay (1000);
-	loop_demo_colors();
+	//HAL_GPIO_TogglePin(LED_R_GPIO_Port, LED_R_Pin);
+	//HAL_Delay (1000);
+	//loop_demo_colors();
 }
 
 static void MapFlash()

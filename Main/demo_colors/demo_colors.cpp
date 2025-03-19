@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include "stm32h7xx_hal.h"
 #include "rtc.h"
+#include "rtc.h"
+#include "usbh_hid.h"
 
 #include "demo_colors.h"
 #include "screen/screen.h"
 
-static Display::Screen screen;
+Display::Screen screen;
 
 void init_demo_colors()
 {
@@ -56,6 +58,36 @@ int32_t loop_demo_colors()
     screen.PrintAlignCenter(0, showTime);
 
 	return 0;
+}
+
+extern "C" void USBH_HID_EventCallback(USBH_HandleTypeDef *phost)
+{
+	if(USBH_HID_GetDeviceType(phost) == HID_MOUSE)  // if the HID is Mouse
+	{
+		HID_MOUSE_Info_TypeDef *Mouse_Info;
+		Mouse_Info = USBH_HID_GetMouseInfo(phost);  // Get the info
+		int X_Val = Mouse_Info->x;  // get the x value
+		int Y_Val = Mouse_Info->y;  // get the y value
+		if (X_Val > 127) X_Val -= 255;
+		if (Y_Val > 127) Y_Val -= 255;
+		char Uart_Buf[100];
+		sprintf (Uart_Buf, "X=%d, Y=%d, Button1=%d, Button2=%d, Button3=%d\n", X_Val, Y_Val, \
+				                                Mouse_Info->buttons[0],Mouse_Info->buttons[1], Mouse_Info->buttons[2]);
+	    screen.PrintAlignCenter(26, Uart_Buf);
+		//HAL_UART_Transmit(&huart2, (uint8_t *) Uart_Buf, len, 100);
+	}
+
+	if(USBH_HID_GetDeviceType(phost) == HID_KEYBOARD)  // if the HID is Mouse
+	{
+		uint8_t key;
+		HID_KEYBD_Info_TypeDef *Keyboard_Info;
+		Keyboard_Info = USBH_HID_GetKeybdInfo(phost);  // get the info
+		key = USBH_HID_GetASCIICode(Keyboard_Info);  // get the key pressed
+		char Uart_Buf[100];
+		sprintf (Uart_Buf, "Key Pressed = %c\n", key);
+	    screen.PrintAlignCenter(28, Uart_Buf);
+		//HAL_UART_Transmit(&huart2, (uint8_t *) Uart_Buf, len, 100);
+	}
 }
 
 
