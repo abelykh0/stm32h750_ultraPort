@@ -7,6 +7,7 @@
 #include "i2c.h"
 #include "spi.h"
 #include "ltdc.h"
+#include "usb_host.h"
 
 #include "w25qxx_qspi.h"
 #include "fatfs.h"
@@ -46,7 +47,7 @@ extern "C" void setup()
 
 extern "C" void loop()
 {
-    //MX_USB_HOST_Process();
+    MX_USB_HOST_Process();
 
 	//GPIO_PinState state = HAL_GPIO_ReadPin(USER_KEY_GPIO_Port, USER_KEY_Pin);
 	//HAL_GPIO_WritePin(LED_R_GPIO_Port, LED_R_Pin, state);
