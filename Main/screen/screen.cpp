@@ -4,13 +4,32 @@
 namespace Display
 {
 
-Screen::Screen()
+Screen::Screen() : Screen(0, 0, H_SIZE, V_SIZE)
 {
+}
+
+Screen::Screen(uint16_t xOffset, uint16_t yOffset, uint16_t width, uint16_t height)
+{
+	this->_xOffset = xOffset;
+	this->_yOffset = yOffset;
+	this->_width = width;
+	this->_height = height;
+	this->_textColumns = this->_width / 8;
+	this->_textRows = this->_height / 8;
 }
 
 void Screen::Clear()
 {
-	memset(VideoRam, this->_attribute, H_SIZE * V_SIZE);
+	// background color
+	uint8_t color = this->_attribute & 0x03F;
+
+    for (int x = this->_xOffset; x < this->_xOffset + this->_width; x++)
+    {
+        for (int y = this->_yOffset; y < this->_yOffset + this->_height; y++)
+        {
+            VideoRam[x + H_SIZE * y] = color;
+        }
+    }
 }
 
 void Screen::SetFont(const uint8_t* font)
@@ -30,14 +49,14 @@ void Screen::SetCursorPosition(uint8_t x, uint8_t y)
 		return;
 	}
 
-	if (x >= TEXT_COLUMNS)
+	if (x >= this->_textColumns)
 	{
-		x = TEXT_COLUMNS - 1;
+		x = this->_textColumns - 1;
 	}
 
-	if (y >= TEXT_ROWS)
+	if (y >= this->_textRows)
 	{
-		y = TEXT_ROWS - 1;
+		y = this->_textRows - 1;
 	}
 
 	this->_cursor_x = x;
@@ -65,13 +84,13 @@ void Screen::PrintAt(uint8_t x, uint8_t y, const char* str)
 
 void Screen::PrintAlignRight(uint8_t y, const char *str)
 {
-    uint8_t leftX = TEXT_COLUMNS - strlen(str);
+    uint8_t leftX = this->_textColumns - strlen(str);
     this->PrintAt(leftX, y, str);
 }
 
 void Screen::PrintAlignCenter(uint8_t y, const char *str)
 {
-    uint8_t leftX = (TEXT_COLUMNS - strlen(str)) / 2;
+    uint8_t leftX = (this->_textColumns - strlen(str)) / 2;
     this->PrintAt(leftX, y, str);
 }
 
@@ -82,7 +101,7 @@ void Screen::PrintChar(char c, uint16_t color)
 	case '\0': //null
 		break;
 	case '\n': //line feed
-		if (this->_cursor_y < TEXT_ROWS - 1)
+		if (this->_cursor_y < this->_textRows - 1)
 		{
 			this->SetCursorPosition(0, this->_cursor_y + 1);
 		}
@@ -116,6 +135,9 @@ void Screen::DrawChar(const uint8_t* f, uint16_t x, uint16_t y, uint8_t c)
 	}
 	uint8_t* character = (uint8_t*)f + (c * 8) - 8;
 
+	x += this->_xOffset;
+	y += this->_yOffset;
+
     for (int i = 0; i < 8; i++)
     {
     	uint8_t line = character[i];
@@ -133,8 +155,7 @@ void Screen::DrawChar(const uint8_t* f, uint16_t x, uint16_t y, uint8_t c)
             	color = this->_attribute & 0x03F;
             }
 
-            VideoRam[x * 8 + j + H_SIZE * (y * 8 + i)] = color;
-            //SetPixel(x * 8 + j, y * 8 + i, color);
+            this->SetPixel(x * 8 + j, y * 8 + i, color);
         }
     }
 }
@@ -154,19 +175,24 @@ void Screen::CursorNext()
 {
 	uint8_t x = this->_cursor_x;
 	uint8_t y = this->_cursor_y;
-	if (x < TEXT_COLUMNS - 1)
+	if (x < this->_textColumns - 1)
 	{
 		x++;
 	}
 	else
 	{
-		if (y < TEXT_ROWS - 1)
+		if (y < this->_textRows - 1)
 		{
 			x = 0;
 			y++;
 		}
 	}
 	this->SetCursorPosition(x, y);
+}
+
+void Screen::SetPixel(uint16_t x, uint16_t y, uint8_t c)
+{
+	VideoRam[(this->_xOffset + x) + H_SIZE * (this->_yOffset + y)] = c;
 }
 
 }

@@ -16,30 +16,30 @@ private:
     void CursorNext();
 
 protected:
-    virtual void DrawChar(const uint8_t *f, uint16_t x, uint16_t y, uint8_t c);
+    void DrawChar(const uint8_t *f, uint16_t x, uint16_t y, uint8_t c);
 
-    uint16_t _hResolution;
-    uint16_t _hResolutionNoBorder;
-    uint16_t _vResolution;
-	uint16_t _startLine;
-    uint16_t _horizontalBorder;
-    uint8_t _verticalBorder;
+    uint16_t _xOffset;
+    uint16_t _yOffset;
+	uint16_t _width;
+	uint16_t _height;
+	uint16_t _textRows;
+	uint16_t _textColumns;
 
     uint8_t* _font = (uint8_t*)font8x8;
     uint16_t _attribute = 0x3F01; // white on blue
 
 public:
 	Screen();
+	Screen(uint16_t xOffset, uint16_t yOffset, uint16_t width, uint16_t height);
     uint8_t _cursor_x = 0;
     uint8_t _cursor_y = 0;
-    uint16_t _pixelCount;
-    uint16_t _attributeCount;
 
 	void Clear();
 	void SetFont(const uint8_t* font);
 	void SetAttribute(uint16_t attribute);
 	void SetCursorPosition(uint8_t x, uint8_t y);
 
+	void SetPixel(uint16_t x, uint16_t y, uint8_t c);
 	void Print(const char* str);
 	void PrintAt(uint8_t x, uint8_t y, const char* str);
 	void PrintAlignRight(uint8_t y, const char *str);

@@ -15,6 +15,7 @@
 #include "config.h"
 #include "screen/lcd.h"
 #include "demo_colors/demo_colors.h"
+#include "emulator/videoRam.h"
 
 static uint32_t L8Clut[256];
 uint8_t VideoRam[H_SIZE * V_SIZE];// __attribute__(( section(".sram2") ));
@@ -25,6 +26,8 @@ uint8_t VideoRam[H_SIZE * V_SIZE];// __attribute__(( section(".sram2") ));
 static void MapFlash();
 static void PrepareClut();
 static void LtdcInit();
+static z80::VideoRam videoRam;
+extern Display::Screen screen;
 
 extern "C" void initialize()
 {
@@ -43,7 +46,11 @@ extern "C" void setup()
 	LtdcInit();
 	HAL_PWREx_EnableUSBVoltageDetector();
 
-	init_demo_colors();
+	//init_demo_colors();
+	screen.SetAttribute(0x2A10);
+	screen.Clear();
+
+	videoRam.ShowScreenshot((uint8_t*)QSPI_BASE);
 }
 
 extern "C" void loop()
