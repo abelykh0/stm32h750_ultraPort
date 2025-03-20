@@ -42,7 +42,7 @@ void SpectrumScreen::Update8Pixels(VideoRam* videoRam, uint16_t address)
 void SpectrumScreen::Update64Pixels(VideoRam* videoRam, uint16_t address)
 {
 	uint16_t attributeOffset = address - ATTRIBUTES_START;
-	uint16_t line = attributeOffset / ATTR_WIDTH;
+	uint16_t line = (attributeOffset / ATTR_WIDTH) * 8;
 	uint8_t character = attributeOffset % ATTR_WIDTH;
 	uint16_t pixelsAddress = this->GetPixelsOffset(line, character) + PIXELS_START;
 

@@ -3,14 +3,6 @@
 
 #include "screen.h"
 
-// 256x192 pixels
-#define WIDTH 256
-#define HEIGHT 192
-
-// 32x24 attributes
-#define ATTR_WIDTH 32
-#define ATTR_HEIGHT 24
-
 namespace z80
 {
 

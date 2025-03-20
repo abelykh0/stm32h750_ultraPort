@@ -7,6 +7,14 @@
 #define PIXELS_START ((uint16_t)0x4000)
 #define ATTRIBUTES_START ((uint16_t)0x5800)
 
+// 256x192 pixels
+#define WIDTH 256
+#define HEIGHT 192
+
+// 32x24 attributes
+#define ATTR_WIDTH 32
+#define ATTR_HEIGHT 24
+
 namespace z80
 {
 
