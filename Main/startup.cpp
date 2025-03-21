@@ -1,14 +1,14 @@
 #include "stm32h7xx_hal.h"
-#include "usbd_core.h"
-#include "usbd_desc.h"
 #include <stdio.h>
 
 #include "gpio.h"
-#include "i2c.h"
 #include "spi.h"
 #include "ltdc.h"
+#include "tim.h"
 #include "usb_host.h"
 #include "usbh_hid.h"
+//#include "usbd_core.h"
+//#include "usbd_desc.h"
 
 #include "w25qxx_qspi.h"
 #include "fatfs.h"
@@ -16,9 +16,10 @@
 #include "screen/lcd.h"
 #include "demo_colors/demo_colors.h"
 #include "emulator/videoRam.h"
+#include "emulator/z80main.h"
+#include "emulator/z80input.h"
 
 static uint32_t L8Clut[256];
-uint8_t VideoRam[H_SIZE * V_SIZE];// __attribute__(( section(".sram2") ));
 
 // EEPROM AT24C02 2K
 #define EEPROM_ADDRESS 0xA0
@@ -26,8 +27,9 @@ uint8_t VideoRam[H_SIZE * V_SIZE];// __attribute__(( section(".sram2") ));
 static void MapFlash();
 static void PrepareClut();
 static void LtdcInit();
-static z80::VideoRam videoRam;
-extern Display::Screen screen;
+extern z80::VideoRam videoRam;
+Display::Screen fullScreen;
+Display::Screen serviceScreen(0, 256, H_SIZE, V_SIZE - 256);
 
 extern "C" void initialize()
 {
@@ -47,15 +49,27 @@ extern "C" void setup()
 	HAL_PWREx_EnableUSBVoltageDetector();
 
 	//init_demo_colors();
-	screen.SetAttribute(0x2A10);
-	screen.Clear();
+	fullScreen.SetAttribute(0x2A10);
+	fullScreen.Clear();
 
-	videoRam.ShowScreenshot((uint8_t*)QSPI_BASE);
+	HAL_TIM_Base_Start_IT(&htim1);
+
+	//videoRam.ShowScreenshot((uint8_t*)QSPI_BASE);
+	zx_setup();
 }
 
 extern "C" void loop()
 {
-    MX_USB_HOST_Process();
+    zx_loop();
+	HAL_Delay (10);
+
+    for (uint8_t y = 0; y < 4; y++)
+    {
+        for (uint8_t x = 0; x < 32; x++)
+        {
+        	serviceScreen.PrintCharAt(x + 4, y, indata[y * 32 + x] + '0');
+        }
+    }
 
 	//GPIO_PinState state = HAL_GPIO_ReadPin(USER_KEY_GPIO_Port, USER_KEY_Pin);
 	//HAL_GPIO_WritePin(LED_R_GPIO_Port, LED_R_Pin, state);
@@ -64,6 +78,10 @@ extern "C" void loop()
 	//HAL_GPIO_TogglePin(LED_R_GPIO_Port, LED_R_Pin);
 	//HAL_Delay (1000);
 	//loop_demo_colors();
+}
+
+extern "C" void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+	//MX_USB_HOST_Process();
 }
 
 static void MapFlash()

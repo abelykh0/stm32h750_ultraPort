@@ -222,7 +222,6 @@ bool OnKey(uint8_t scanCode)
     return true;
 }
 
-
 extern "C" void USBH_HID_EventCallback(USBH_HandleTypeDef* phost)
 {
 	if (USBH_HID_GetDeviceType(phost) == HID_KEYBOARD)

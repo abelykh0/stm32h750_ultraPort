@@ -19,12 +19,11 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "fatfs.h"
-#include "i2c.h"
 #include "memorymap.h"
 #include "rtc.h"
 #include "sdmmc.h"
 #include "spi.h"
-#include "usb_device.h"
+#include "tim.h"
 #include "usb_host.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -103,14 +102,12 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-  MX_USB_DEVICE_Init();
   MX_SDMMC1_SD_Init();
   MX_FATFS_Init();
-  MX_I2C3_Init();
   MX_USB_HOST_Init();
   MX_SPI4_Init();
   MX_RTC_Init();
-  MX_I2C4_Init();
+  MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
   setup();
   /* USER CODE END 2 */
@@ -119,11 +116,12 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	loop();
+	continue;
     /* USER CODE END WHILE */
     MX_USB_HOST_Process();
 
     /* USER CODE BEGIN 3 */
-	loop();
   }
   /* USER CODE END 3 */
 }

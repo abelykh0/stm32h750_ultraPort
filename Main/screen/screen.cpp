@@ -1,6 +1,8 @@
 #include <screen/screen.h>
 #include <string.h>
 
+uint8_t VideoRam[H_SIZE * V_SIZE];// __attribute__(( section(".sram2") ));
+
 namespace Display
 {
 
@@ -135,9 +137,6 @@ void Screen::DrawChar(const uint8_t* f, uint16_t x, uint16_t y, uint8_t c)
 	}
 	uint8_t* character = (uint8_t*)f + (c * 8) - 8;
 
-	x += this->_xOffset;
-	y += this->_yOffset;
-
     for (int i = 0; i < 8; i++)
     {
     	uint8_t line = character[i];
@@ -192,7 +191,14 @@ void Screen::CursorNext()
 
 void Screen::SetPixel(uint16_t x, uint16_t y, uint8_t c)
 {
-	VideoRam[(this->_xOffset + x) + H_SIZE * (this->_yOffset + y)] = c;
+	uint16_t offset = (this->_xOffset + x) + H_SIZE * (this->_yOffset + y);
+	if (offset >= H_SIZE * V_SIZE)
+	{
+		// out of screen area
+		return;
+	}
+
+	VideoRam[offset] = c;
 }
 
 }

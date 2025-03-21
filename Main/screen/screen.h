@@ -5,6 +5,8 @@
 #include "config.h"
 #include "font8x8.h"
 
+extern uint8_t VideoRam[H_SIZE * V_SIZE];
+
 namespace Display
 {
 
@@ -26,7 +28,7 @@ protected:
 	uint16_t _textColumns;
 
     uint8_t* _font = (uint8_t*)font8x8;
-    uint16_t _attribute = 0x3F01; // white on blue
+    uint16_t _attribute = 0x2A10; // white on blue
 
 public:
 	Screen();
