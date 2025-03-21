@@ -191,7 +191,7 @@ void Screen::CursorNext()
 
 void Screen::SetPixel(uint16_t x, uint16_t y, uint8_t c)
 {
-	uint16_t offset = (this->_xOffset + x) + H_SIZE * (this->_yOffset + y);
+	uint32_t offset = (H_SIZE * (this->_yOffset + y)) + (this->_xOffset + x);
 	if (offset >= H_SIZE * V_SIZE)
 	{
 		// out of screen area

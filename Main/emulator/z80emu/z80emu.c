@@ -11,6 +11,7 @@
 #include "instructions.h"
 #include "macros.h"
 #include "tables.h"
+extern void MX_USB_HOST_Process(void);
 
 /* Indirect (HL) or prefixed indexed (IX + d) and (IY + d) memory operands are
  * encoded using the 3 bits "110" (0x06).
@@ -260,6 +261,7 @@ static int emulate (Z80_STATE * state,
         goto start_emulation;
 
         for ( ; ; ) {   
+            MX_USB_HOST_Process();
 
                 void    **registers; 
                 int     instruction;

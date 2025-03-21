@@ -26,7 +26,7 @@ const uint8_t keybuf[ZX_KEY_LAST] = {
 	0x01, 0x02, 0x04, 0x08, 0x10, // ZX_KEY_SPACE, ZX_KEY_SYM, ZX_KEY_M, ZX_KEY_N, ZX_KEY_B
 };
 
-#define ON_KEY(k) indata[keyaddr[k] - 0x7F] |= keybuf[k];
+#define ON_KEY(k) indata[keyaddr[k] - 0x7F] &= ~keybuf[k]
 
 bool OnKey(uint8_t scanCode)
 {
@@ -226,9 +226,19 @@ extern "C" void USBH_HID_EventCallback(USBH_HandleTypeDef* phost)
 {
 	if (USBH_HID_GetDeviceType(phost) == HID_KEYBOARD)
 	{
-		memset(indata, 0, sizeof(indata));
+		memset(indata, 0xFF, sizeof(indata));
 
 		HID_KEYBD_Info_TypeDef* keyboardInfo = USBH_HID_GetKeybdInfo(phost);
+
+		if (keyboardInfo->lshift || keyboardInfo->rshift)
+		{
+			OnKey(KEY_LEFTSHIFT);
+		}
+
+		if (keyboardInfo->lctrl || keyboardInfo->rctrl)
+		{
+			OnKey(KEY_LEFTCONTROL);
+		}
 
 		for (uint8_t i = 0; i < 6; i++)
 		{

@@ -3,6 +3,8 @@
 #include "startup.h"
 
 #include "stm32h7xx_hal.h"
+#include "usb_host.h"
+
 #include "z80main.h"
 #include "z80input.h"
 //#include "Keyboard/ps2Keyboard.h"

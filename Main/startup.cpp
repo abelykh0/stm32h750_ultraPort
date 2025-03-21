@@ -61,8 +61,7 @@ extern "C" void setup()
 extern "C" void loop()
 {
     zx_loop();
-	HAL_Delay (10);
-
+/*
     for (uint8_t y = 0; y < 4; y++)
     {
         for (uint8_t x = 0; x < 32; x++)
@@ -70,7 +69,7 @@ extern "C" void loop()
         	serviceScreen.PrintCharAt(x + 4, y, indata[y * 32 + x] + '0');
         }
     }
-
+*/
 	//GPIO_PinState state = HAL_GPIO_ReadPin(USER_KEY_GPIO_Port, USER_KEY_Pin);
 	//HAL_GPIO_WritePin(LED_R_GPIO_Port, LED_R_Pin, state);
 	//HAL_Delay (10);
@@ -81,6 +80,7 @@ extern "C" void loop()
 }
 
 extern "C" void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+	// Can't do it, will hang, it is using HAL_Delay
 	//MX_USB_HOST_Process();
 }
 
