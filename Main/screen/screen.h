@@ -3,7 +3,7 @@
 
 #include "stdint.h"
 #include "config.h"
-#include "font8x8.h"
+#include "resources.h"
 
 extern uint8_t VideoRam[H_SIZE * V_SIZE];
 extern void LtdcInit();

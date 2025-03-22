@@ -7,7 +7,7 @@
 
 #include "z80main.h"
 #include "z80input.h"
-#include "main_ROM.h"
+#include "resources.h"
 //#include "Keyboard/ps2Keyboard.h"
 
 //#define BEEPER

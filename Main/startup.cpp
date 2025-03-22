@@ -21,7 +21,6 @@
 static void MapFlash();
 extern z80::VideoRam videoRam;
 Display::Screen fullScreen;
-Display::Screen serviceScreen(0, 256, H_SIZE, V_SIZE - 256);
 
 extern "C" void initialize()
 {
@@ -50,8 +49,11 @@ extern "C" void setup()
 
 extern "C" void loop()
 {
+	MX_USB_HOST_Process();
+
 	if (loadSnapshotLoop())
 	{
+		HAL_Delay(5);
 		return;
 	}
 

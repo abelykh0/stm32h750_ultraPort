@@ -2,9 +2,11 @@
 #include <ctype.h>
 #include <stdlib.h>
 
+#include "usbh_hid.h"
+#include "usb_host.h"
+
 #include "SDCard.h"
 #include "screen.h"
-#include "usbh_hid.h"
 #include "emulator.h"
 #include "keyboard/keyboard.h"
 #include "emulator/z80snapshot.h"
@@ -422,6 +424,5 @@ bool loadSnapshotLoop()
 	DebugScreen.PrintAt(x, y, " ");
 
 	SetSelection(_selectedFile);
-
 	return true;
 }

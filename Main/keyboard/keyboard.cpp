@@ -1,5 +1,6 @@
 #include "keyboard.h"
 #include "usbh_hid.h"
+#include "usb_host.h"
 #include "emulator/z80input.h"
 
 static uint8_t lastScanCode;
@@ -7,7 +8,6 @@ static uint8_t lastScanCode;
 uint8_t GetScanCode()
 {
 	uint8_t result = lastScanCode;
-	lastScanCode = 0;
 	return result;
 }
 
