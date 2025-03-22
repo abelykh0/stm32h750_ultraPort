@@ -14,7 +14,6 @@
 #include "fatfs.h"
 #include "config.h"
 #include "screen/lcd.h"
-#include "demo_colors/demo_colors.h"
 #include "emulator/videoRam.h"
 #include "emulator/z80main.h"
 #include "emulator/z80input.h"
@@ -35,7 +34,7 @@ extern "C" void initialize()
 {
 	MX_GPIO_Init();
 
-	// This board requires this to keep running
+	// On this board required to keep running
 	HAL_GPIO_WritePin(ON_GPIO_Port, ON_Pin, GPIO_PIN_SET);
 
 	PrepareClut();
@@ -48,8 +47,6 @@ extern "C" void setup()
 	LtdcInit();
 	HAL_PWREx_EnableUSBVoltageDetector();
 
-	//init_demo_colors();
-	fullScreen.SetAttribute(0x2A10);
 	fullScreen.Clear();
 
 	HAL_TIM_Base_Start_IT(&htim1);

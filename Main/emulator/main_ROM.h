@@ -3,6 +3,6 @@
 
 #include <stdint.h>
 
-//uint8_t* ROM = (uint8_t*)QSPI_BASE + 0x30000;
+extern uint8_t* ROM;
 
 #endif

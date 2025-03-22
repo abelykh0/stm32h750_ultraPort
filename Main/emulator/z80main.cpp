@@ -7,6 +7,7 @@
 
 #include "z80main.h"
 #include "z80input.h"
+#include "main_ROM.h"
 //#include "Keyboard/ps2Keyboard.h"
 
 //#define BEEPER
@@ -25,8 +26,6 @@ static int _next_total = 0;
 static uint8_t zx_data = 0;
 static uint8_t frames = 0;
 //static uint32_t _ticks = 0;
-
-static uint8_t* ROM = (uint8_t*)QSPI_BASE + 0x30000;
 
 extern "C"
 {

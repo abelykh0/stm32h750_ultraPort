@@ -105,7 +105,9 @@ void ReadState(FileHeader* header);
 void SaveState(FileHeader* header);
 void GetPageInfo(uint8_t* buffer, bool is128Mode, uint8_t pagingState, uint8_t* pageNumber, uint16_t* pageSize);
 
-bool zx::SaveZ80Snapshot(FIL* file, uint8_t buffer1[0x4000], uint8_t buffer2[0x4000])
+using namespace z80;
+
+bool SaveZ80Snapshot(FIL* file, uint8_t buffer1[0x4000], uint8_t buffer2[0x4000])
 {
 	// Note: this requires little-endian processor
 	FileHeader* header = (FileHeader*)buffer1;
@@ -198,7 +200,7 @@ bool zx::SaveZ80Snapshot(FIL* file, uint8_t buffer1[0x4000], uint8_t buffer2[0x4
 	return true;
 }
 
-bool zx::LoadZ80Snapshot(FIL* file, uint8_t buffer1[0x4000],
+bool LoadZ80Snapshot(FIL* file, uint8_t buffer1[0x4000],
 		uint8_t buffer2[0x4000])
 {
 	UINT bytesRead;
@@ -289,7 +291,7 @@ bool zx::LoadZ80Snapshot(FIL* file, uint8_t buffer1[0x4000],
 			if (pageNumber == 8)
 			{
 				// 0x4000..0x5AFF
-				//_spectrumScreen->ShowScreenshot(memory);
+				videoRam.ShowScreenshot(memory);
 
 				// 0x5B00..0x7FFF
 				memcpy(RamBuffer, &memory[0x1B00], 0x2500);
@@ -325,7 +327,7 @@ bool zx::LoadZ80Snapshot(FIL* file, uint8_t buffer1[0x4000],
 	return true;
 }
 
-bool zx::LoadScreenFromZ80Snapshot(FIL* file, uint8_t buffer1[0x4000])
+bool LoadScreenFromZ80Snapshot(FIL* file, uint8_t buffer1[0x4000])
 {
 	UINT bytesRead;
 
@@ -400,7 +402,7 @@ bool zx::LoadScreenFromZ80Snapshot(FIL* file, uint8_t buffer1[0x4000])
 				pageSize = 6912;
 			}
 			DecompressPage(buffer1, pageSize, isCompressed, 6912, buffer2);
-			//_spectrumScreen->ShowScreenshot(buffer2);
+			videoRam.ShowScreenshot(buffer2);
 			return true;
 		}
 		else
@@ -433,7 +435,7 @@ bool zx::LoadScreenFromZ80Snapshot(FIL* file, uint8_t buffer1[0x4000])
 	return true;
 }
 
-bool zx::LoadScreenshot(FIL* file, uint8_t buffer1[0x4000])
+bool LoadScreenshot(FIL* file, uint8_t buffer1[0x4000])
 {
 	FRESULT readResult;
 	UINT bytesRead;
@@ -453,7 +455,7 @@ bool zx::LoadScreenshot(FIL* file, uint8_t buffer1[0x4000])
 		buffer += bytesRead;
 	} while (remainingBytes > 0);
 
-	//_spectrumScreen->ShowScreenshot(buffer1);
+	videoRam.ShowScreenshot(buffer1);
 	return true;
 }
 
@@ -532,7 +534,7 @@ void ReadState(FileHeader* header)
 	_zxCpu.iff2 = header->IFF2;
 	_zxCpu.pc = header->PC;
 
-	//uint8_t borderColor = (header->Flags1 & 0x0E) >> 1;
+	uint8_t borderColor = (header->Flags1 & 0x0E) >> 1;
 	//*_spectrumScreen->Settings.BorderColor = _spectrumScreen->FromSpectrumColor(borderColor) >> 8;
 }
 

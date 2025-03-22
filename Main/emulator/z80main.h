@@ -12,6 +12,7 @@ using namespace Display;
 //extern Sound::Ay3_8912_state _ay3_8912;
 extern Z80_STATE _zxCpu;
 extern uint8_t RamBuffer[];
+extern z80::VideoRam videoRam;
 
 void zx_setup();
 int32_t zx_loop();

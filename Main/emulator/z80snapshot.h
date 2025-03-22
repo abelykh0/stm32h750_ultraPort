@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include "fatfs.h"
 
-namespace zx
+namespace z80
 {
 
 bool LoadZ80Snapshot(FIL* file, uint8_t buffer1[0x4000], uint8_t buffer2[0x4000]);
