@@ -1,7 +1,8 @@
+#include "z80snapshot.h"
+
 #include <string.h>
 #include <stdio.h>
 
-#include "z80snapshot.h"
 #include "Emulator/z80main.h"
 #include "Emulator/z80emu/z80emu.h"
 #include "Emulator/SpectrumScreen.h"
@@ -105,9 +106,7 @@ void ReadState(FileHeader* header);
 void SaveState(FileHeader* header);
 void GetPageInfo(uint8_t* buffer, bool is128Mode, uint8_t pagingState, uint8_t* pageNumber, uint16_t* pageSize);
 
-using namespace z80;
-
-bool SaveZ80Snapshot(FIL* file, uint8_t buffer1[0x4000], uint8_t buffer2[0x4000])
+bool z80::SaveZ80Snapshot(FIL* file, uint8_t buffer1[0x4000], uint8_t buffer2[0x4000])
 {
 	// Note: this requires little-endian processor
 	FileHeader* header = (FileHeader*)buffer1;
@@ -200,8 +199,7 @@ bool SaveZ80Snapshot(FIL* file, uint8_t buffer1[0x4000], uint8_t buffer2[0x4000]
 	return true;
 }
 
-bool LoadZ80Snapshot(FIL* file, uint8_t buffer1[0x4000],
-		uint8_t buffer2[0x4000])
+bool z80::LoadZ80Snapshot(FIL* file, uint8_t buffer1[0x4000], uint8_t buffer2[0x4000])
 {
 	UINT bytesRead;
 	UINT bytesToRead;
@@ -327,7 +325,7 @@ bool LoadZ80Snapshot(FIL* file, uint8_t buffer1[0x4000],
 	return true;
 }
 
-bool LoadScreenFromZ80Snapshot(FIL* file, uint8_t buffer1[0x4000])
+bool z80::LoadScreenFromZ80Snapshot(FIL* file, uint8_t buffer1[0x4000])
 {
 	UINT bytesRead;
 
@@ -435,7 +433,7 @@ bool LoadScreenFromZ80Snapshot(FIL* file, uint8_t buffer1[0x4000])
 	return true;
 }
 
-bool LoadScreenshot(FIL* file, uint8_t buffer1[0x4000])
+bool z80::LoadScreenshot(FIL* file, uint8_t buffer1[0x4000])
 {
 	FRESULT readResult;
 	UINT bytesRead;
@@ -534,7 +532,7 @@ void ReadState(FileHeader* header)
 	_zxCpu.iff2 = header->IFF2;
 	_zxCpu.pc = header->PC;
 
-	uint8_t borderColor = (header->Flags1 & 0x0E) >> 1;
+	//uint8_t borderColor = (header->Flags1 & 0x0E) >> 1;
 	//*_spectrumScreen->Settings.BorderColor = _spectrumScreen->FromSpectrumColor(borderColor) >> 8;
 }
 

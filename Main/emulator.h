@@ -6,11 +6,15 @@
 #include "fatfs.h"
 #include "screen.h"
 
-using namespace Display;
-
 #define DEBUG_COLUMNS (H_SIZE / 8)
 #define SCREEN_Y_OFFSET 256
 #define DEBUG_ROWS ((V_SIZE - SCREEN_Y_OFFSET) / 8)
+
+typedef struct
+{
+	uint8_t  videoRam[6912 + 768];
+	uint8_t  BorderColor;
+} SpectrumScreenData;
 
 extern Display::Screen DebugScreen;
 extern z80::SpectrumScreen MainScreen;
@@ -20,15 +24,11 @@ extern uint8_t _buffer16K_2[0x4000];
 void showKeyboardSetup();
 bool showKeyboardLoop();
 
-void setDateTimeSetup();
-bool setDateTimeLoop();
-
 void showHelp();
 void clearHelp();
 void toggleHelp();
 void restoreHelp();
 
-void initializeVideo();
 void startVideo();
 void showErrorMessage(const char* errorMessage);
 void showTitle(const char* title);

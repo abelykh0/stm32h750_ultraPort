@@ -5,9 +5,10 @@
 #include <stdio.h>
 #include "stm32h7xx_hal.h"
 
-#include "Emulator/z80main.h"
-#include "Emulator/z80snapshot.h"
-#include "Emulator/z80emu/z80emu.h"
+#include "emulator/z80main.h"
+#include "emulator/z80snapshot.h"
+#include "emulator/z80emu/z80emu.h"
+#include "keyboard/keyboard.h"
 //#include "resources/keyboard.h"
 
 #define DEBUG_BAND_HEIGHT (DEBUG_ROWS * 8 * 2)
@@ -17,10 +18,17 @@ extern RTC_HandleTypeDef hrtc;
 uint8_t _buffer16K_1[0x4000];
 uint8_t _buffer16K_2[0x4000];
 
+z80::SpectrumScreen MainScreen;
 Display::Screen DebugScreen(0, SCREEN_Y_OFFSET, H_SIZE, V_SIZE - SCREEN_Y_OFFSET);
 
 static bool _showingKeyboard;
 static bool _helpShown;
+
+// Spectrum video RAM + border color
+static SpectrumScreenData _spectrumScreenData;
+
+// Used in saveState / restoreState
+static SpectrumScreenData* _savedScreenData = (SpectrumScreenData*)&_buffer16K_2[0x4000 - sizeof(SpectrumScreenData)];
 
 void startVideo()
 {
@@ -62,8 +70,8 @@ bool showKeyboardLoop()
 		return false;
 	}
 
-	int32_t scanCode = 0; //Ps2_GetScancode();
-	if (scanCode == 0 || (scanCode & 0xFF00) != 0xF000)
+	int8_t scanCode = GetScanCode();
+	if (scanCode == 0)
 	{
 		return true;
 	}

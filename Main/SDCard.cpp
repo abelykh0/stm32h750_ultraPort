@@ -2,14 +2,12 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-#include "ffconf.h"
 #include "SDCard.h"
 #include "screen.h"
 #include "usbh_hid.h"
 #include "emulator.h"
+#include "keyboard/keyboard.h"
 #include "emulator/z80snapshot.h"
-
-using namespace z80;
 
 #define FILE_COLUMNS 3
 #define FILE_COLUMNWIDTH (TEXT_COLUMNS / FILE_COLUMNS)
@@ -107,7 +105,7 @@ void SetSelection(uint8_t selectedFile)
 			fr = f_open(&file, scrFileName, FA_READ | FA_OPEN_EXISTING);
 			if (fr == FR_OK)
 			{
-				if (!LoadScreenshot(&file, _buffer16K_1))
+				if (!z80::LoadScreenshot(&file, _buffer16K_1))
 				{
 					noScreenshot();
 				}
@@ -121,7 +119,7 @@ void SetSelection(uint8_t selectedFile)
 			fr = f_open(&file, fileName, FA_READ | FA_OPEN_EXISTING);
 			if (fr == FR_OK)
 			{
-				if (!LoadScreenFromZ80Snapshot(&file, _buffer16K_1))
+				if (!z80::LoadScreenFromZ80Snapshot(&file, _buffer16K_1))
 				{
 					noScreenshot();
 				}
@@ -140,7 +138,7 @@ void loadSnapshot(const TCHAR* fileName)
 	{
 		FIL file;
 		fr = f_open(&file, fileName, FA_READ | FA_OPEN_EXISTING);
-		LoadZ80Snapshot(&file, _buffer16K_1, _buffer16K_2);
+		z80::LoadZ80Snapshot(&file, _buffer16K_1, _buffer16K_2);
 		f_close(&file);
 
 		unmount();
@@ -154,19 +152,11 @@ bool saveSnapshot(const TCHAR* fileName)
 	if (fr == FR_OK)
 	{
 		FIL file;
-		fr = f_open(&file, fileName, FA_WRITE | FA_CREATE_NEW);
-		if (fr == FR_EXIST)
-		{
-			fr = f_unlink(fileName);
-			if (fr == FR_OK)
-			{
-				fr = f_open(&file, fileName, FA_WRITE | FA_CREATE_NEW);
-			}
-		}
+		fr = f_open(&file, fileName, FA_WRITE | FA_CREATE_ALWAYS);
 
 		if (fr == FR_OK)
 		{
-			result = SaveZ80Snapshot(&file, _buffer16K_1, _buffer16K_2);
+			result = z80::SaveZ80Snapshot(&file, _buffer16K_1, _buffer16K_2);
 			f_close(&file);
 		}
 
@@ -223,14 +213,12 @@ bool saveSnapshotLoop()
 		return false;
 	}
 
-	int32_t scanCode = 0;
-	//int32_t scanCode = Ps2_GetScancode();
-	//if (scanCode == 0 || (scanCode & 0xFF00) == 0xF000)
-	//{
-	//	return true;
-	//}
+	int8_t scanCode = GetScanCode();
+	if (scanCode == 0)
+	{
+		return true;
+	}
 
-	scanCode = ((scanCode & 0xFF0000) >> 8 | (scanCode & 0xFF));
 	uint8_t x = DebugScreen._cursor_x;
 	switch (scanCode)
 	{
@@ -373,16 +361,14 @@ bool loadSnapshotLoop()
 		return false;
 	}
 
-	int32_t scanCode = 0;
-	//int32_t scanCode = Ps2_GetScancode();
-	if (scanCode == 0 || (scanCode & 0xFF00) != 0xF000)
+	int8_t scanCode = GetScanCode();
+	if (scanCode == 0)
 	{
 		return true;
 	}
 
 	uint8_t previousSelection = _selectedFile;
 
-	scanCode = ((scanCode & 0xFF0000) >> 8 | (scanCode & 0xFF));
 	switch (scanCode)
 	{
 	case KEY_UPARROW:

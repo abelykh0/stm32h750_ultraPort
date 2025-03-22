@@ -6,6 +6,7 @@
 #include "font8x8.h"
 
 extern uint8_t VideoRam[H_SIZE * V_SIZE];
+extern void LtdcInit();
 
 namespace Display
 {

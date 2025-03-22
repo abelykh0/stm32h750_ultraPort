@@ -3,15 +3,9 @@
 
 #include "main.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+extern uint32_t L8Clut[256];
 
-void lcd_init(void);
-void lcd_bl_on(void);
-
-#ifdef __cplusplus
-}
-#endif
+void LtdcInit();
+void PrepareClut();
 
 #endif
