@@ -215,7 +215,7 @@ bool saveSnapshotLoop()
 		return false;
 	}
 
-	int8_t scanCode = GetScanCode();
+	int8_t scanCode = GetScanCode(true);
 	if (scanCode == 0)
 	{
 		return true;
@@ -363,7 +363,7 @@ bool loadSnapshotLoop()
 		return false;
 	}
 
-	int8_t scanCode = GetScanCode();
+	int8_t scanCode = GetScanCode(true);
 	if (scanCode == 0)
 	{
 		return true;

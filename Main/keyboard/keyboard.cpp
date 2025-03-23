@@ -5,9 +5,18 @@
 
 static uint8_t lastScanCode;
 
-uint8_t GetScanCode()
+uint8_t GetScanCode(bool wait)
 {
+	if (wait)
+	{
+		while (lastScanCode == 0)
+		{
+			MX_USB_HOST_Process();
+		}
+	}
+
 	uint8_t result = lastScanCode;
+	lastScanCode = 0;
 	return result;
 }
 

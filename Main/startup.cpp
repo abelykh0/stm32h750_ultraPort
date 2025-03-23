@@ -49,11 +49,8 @@ extern "C" void setup()
 
 extern "C" void loop()
 {
-	MX_USB_HOST_Process();
-
 	if (loadSnapshotLoop())
 	{
-		HAL_Delay(5);
 		return;
 	}
 
@@ -68,7 +65,7 @@ extern "C" void loop()
 	}
 
 	zx_loop();
-	int8_t result = GetScanCode();
+	int8_t result = GetScanCode(false);
 	switch (result)
 	{
 	case KEY_ESCAPE:

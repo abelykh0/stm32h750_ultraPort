@@ -131,11 +131,7 @@ void Screen::PrintChar(char c, uint16_t color)
 
 void Screen::DrawChar(const uint8_t* f, uint16_t x, uint16_t y, uint8_t c)
 {
-	if (c == 0)
-	{
-		c = 1;
-	}
-	uint8_t* character = (uint8_t*)f + (c * 8) - 8;
+	uint8_t* character = (uint8_t*)f + (c * 8);
 
     for (int i = 0; i < 8; i++)
     {

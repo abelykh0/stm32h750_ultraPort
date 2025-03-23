@@ -3,6 +3,6 @@
 
 #include "stdint.h"
 
-uint8_t GetScanCode();
+uint8_t GetScanCode(bool wait);
 
 #endif

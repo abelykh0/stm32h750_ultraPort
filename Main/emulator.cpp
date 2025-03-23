@@ -59,8 +59,13 @@ void showKeyboardSetup()
 	DebugScreen.Clear();
 	DebugScreen.PrintAlignCenter(2, "Press any key to return");
 
-	//videoRam.ShowScreenshot(spectrumKeyboard);
+	videoRam.ShowScreenshot(spectrumKeyboard);
 	//_spectrumScreenData.BorderColor = 0; // Black
+
+	for (uint8_t i = 0; i < 255; i++)
+	{
+		DebugScreen.PrintCharAt(4 + (i % 32), (i / 32), i);
+	}
 }
 
 bool showKeyboardLoop()
@@ -70,7 +75,7 @@ bool showKeyboardLoop()
 		return false;
 	}
 
-	int8_t scanCode = GetScanCode();
+	int8_t scanCode = GetScanCode(true);
 	if (scanCode == 0)
 	{
 		return true;
