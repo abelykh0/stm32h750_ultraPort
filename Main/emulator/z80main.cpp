@@ -8,7 +8,7 @@
 #include "z80main.h"
 #include "z80input.h"
 #include "resources.h"
-//#include "Keyboard/ps2Keyboard.h"
+#include "emulator.h"
 
 //#define BEEPER
 #define CYCLES_PER_STEP 69888
@@ -25,7 +25,7 @@ static int _total;
 static int _next_total = 0;
 static uint8_t zx_data = 0;
 static uint8_t frames = 0;
-//static uint32_t _ticks = 0;
+static uint32_t _ticks = 0;
 
 extern "C"
 {
@@ -84,22 +84,19 @@ int32_t zx_loop()
             frames = 0;
             for (int i = 0; i < _attributeCount; i++)
             {
-                //uint16_t color = _spectrumScreen->Settings.Attributes[i];
-                //if ((color & 0x8080) != 0)
-                //{
-                //	_spectrumScreen->Settings.Attributes[i] = __builtin_bswap16(color);
-                //}
+            	MainScreen.Flash();
             }
         }
 
         Z80Interrupt(&_zxCpu, 0xff, &_zxContext);
 
         // delay
-        //while (_spectrumScreen->_frames < _ticks)
-        //{
-        //}
+        while (HAL_GetTick() < _ticks)
+        {
+            MX_USB_HOST_Process();
+        }
 
-		//_ticks = _spectrumScreen->_frames + 1;
+		_ticks += 20; // 50 frames per second
     }
 
     return result;

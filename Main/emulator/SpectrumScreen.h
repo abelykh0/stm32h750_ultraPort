@@ -23,7 +23,7 @@ public:
 	void Update(VideoRam* videoRam, uint16_t address);
 
 	// needs to be called every 32 frames
-	//void Flash();
+	void Flash();
 };
 
 }

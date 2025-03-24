@@ -9,7 +9,6 @@
 #include "emulator/z80snapshot.h"
 #include "emulator/z80emu/z80emu.h"
 #include "keyboard/keyboard.h"
-//#include "resources/keyboard.h"
 
 #define DEBUG_BAND_HEIGHT (DEBUG_ROWS * 8 * 2)
 
@@ -61,11 +60,6 @@ void showKeyboardSetup()
 
 	videoRam.ShowScreenshot(spectrumKeyboard);
 	//_spectrumScreenData.BorderColor = 0; // Black
-
-	for (uint8_t i = 0; i < 255; i++)
-	{
-		DebugScreen.PrintCharAt(4 + (i % 32), (i / 32), i);
-	}
 }
 
 bool showKeyboardLoop()

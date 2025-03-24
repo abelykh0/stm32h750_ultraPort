@@ -144,4 +144,13 @@ uint16_t SpectrumScreen::FromSpectrumColor(uint8_t sinclairColor)
 	return result;
 }
 
+void SpectrumScreen::Flash()
+{
+    //uint16_t color = _spectrumScreen->Settings.Attributes[i];
+    //if ((color & 0x8080) != 0)
+    //{
+    //	_spectrumScreen->Settings.Attributes[i] = __builtin_bswap16(color);
+    //}
+}
+
 }
