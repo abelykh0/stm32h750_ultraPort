@@ -10,12 +10,6 @@
 #define SCREEN_Y_OFFSET 256
 #define DEBUG_ROWS ((V_SIZE - SCREEN_Y_OFFSET) / 8)
 
-typedef struct
-{
-	uint8_t  videoRam[6912 + 768];
-	uint8_t  BorderColor;
-} SpectrumScreenData;
-
 extern Display::Screen DebugScreen;
 extern z80::SpectrumScreen MainScreen;
 extern uint8_t _buffer16K_1[0x4000];

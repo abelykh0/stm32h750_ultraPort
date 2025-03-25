@@ -20,6 +20,7 @@ private:
 
 protected:
     void DrawChar(const uint8_t *f, uint16_t x, uint16_t y, uint8_t c);
+    void SetPixelNoOffset(uint16_t x, uint16_t y, uint8_t c);
 
     uint16_t _xOffset;
     uint16_t _yOffset;

@@ -63,7 +63,7 @@ void zx_setup()
 void zx_reset()
 {
     memset(indata, 0xFF, 128);
-    //*_spectrumScreen->Settings.BorderColor = 0x15;
+	MainScreen.WriteBorderColor(0x07);
     Z80Reset(&_zxCpu);
 }
 
@@ -82,10 +82,7 @@ int32_t zx_loop()
         if (frames > 31)
         {
             frames = 0;
-            for (int i = 0; i < _attributeCount; i++)
-            {
-            	MainScreen.Flash();
-            }
+        	MainScreen.Flash(&videoRam);
         }
 
         Z80Interrupt(&_zxCpu, 0xff, &_zxContext);
@@ -216,7 +213,7 @@ extern "C" void output(uint8_t portLow, uint8_t portHigh, uint8_t data)
         uint8_t borderColor = (data & 0x07);
     	if ((indata[0x20] & 0x07) != borderColor)
     	{
-            //*_spectrumScreen->Settings.BorderColor = _spectrumScreen->FromSpectrumColor(borderColor) >> 8;
+    		MainScreen.WriteBorderColor(borderColor);
     	}
 
 #ifdef BEEPER

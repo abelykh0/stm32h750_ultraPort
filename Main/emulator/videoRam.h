@@ -34,6 +34,8 @@ public:
 	VideoRam();
 
 	void ShowScreenshot(const uint8_t* screenshot);
+	void SaveScreenData(uint8_t* buffer);
+	void RestoreScreenData(uint8_t* buffer);
 
 	virtual uint8_t ReadByte(uint16_t address) override;
 	virtual uint16_t ReadWord(uint16_t address) override;

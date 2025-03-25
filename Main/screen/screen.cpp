@@ -197,4 +197,16 @@ void Screen::SetPixel(uint16_t x, uint16_t y, uint8_t c)
 	VideoRam[offset] = c;
 }
 
+void Screen::SetPixelNoOffset(uint16_t x, uint16_t y, uint8_t c)
+{
+	uint32_t offset = (H_SIZE * y) + x;
+	if (offset >= H_SIZE * V_SIZE)
+	{
+		// out of screen area
+		return;
+	}
+
+	VideoRam[offset] = c;
+}
+
 }

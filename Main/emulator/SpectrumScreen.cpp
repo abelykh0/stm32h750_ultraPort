@@ -7,6 +7,8 @@ namespace z80
 SpectrumScreen::SpectrumScreen()
 	: Screen(32, 32, WIDTH, HEIGHT)
 {
+	this->_borderColor = 0;
+	this->_flashOn = false;
 }
 
 // ATTR_WIDTH bytes in a line, HEIGHT lines
@@ -26,7 +28,13 @@ void SpectrumScreen::Update8Pixels(VideoRam* videoRam, uint16_t address)
 	for (int i = 0; i < 8; i++)
 	{
     	uint8_t color;
-        if ((line << i) & 0x80)
+    	bool pixel = ((line << i) & 0x80) != 0;
+    	if (this->_flashOn && ((sinclairAttribute & 0x08) != 0))
+    	{
+    		pixel = !pixel;
+    	}
+
+        if (pixel)
         {
         	color = foregroundColor;
         }
@@ -144,13 +152,59 @@ uint16_t SpectrumScreen::FromSpectrumColor(uint8_t sinclairColor)
 	return result;
 }
 
-void SpectrumScreen::Flash()
+void SpectrumScreen::Flash(VideoRam* videoRam)
 {
-    //uint16_t color = _spectrumScreen->Settings.Attributes[i];
-    //if ((color & 0x8080) != 0)
-    //{
-    //	_spectrumScreen->Settings.Attributes[i] = __builtin_bswap16(color);
-    //}
+	this->_flashOn = !this->_flashOn;
+
+	for (uint16_t address = ATTRIBUTES_START; address < ATTRIBUTES_START + (ATTR_WIDTH * ATTR_HEIGHT); address++)
+	{
+		uint8_t attribute = videoRam->ReadByte(address);
+		if ((attribute & 0x80) != 0)
+		{
+			this->Update64Pixels(videoRam, address);
+		}
+	}
+}
+
+
+uint8_t SpectrumScreen::ReadBorderColor()
+{
+	return this->_borderColor;
+}
+
+void SpectrumScreen::WriteBorderColor(uint8_t color)
+{
+	this->_borderColor = color;
+	uint8_t convertedColor = this->FromSpectrumColor(color) >> 8;
+
+	for (uint16_t y = 0; y < this->_yOffset; y++)
+	{
+		for (uint16_t x = 0; x < H_SIZE; x++)
+		{
+			this->SetPixelNoOffset(x, y, convertedColor);
+		}
+	}
+
+	for (uint16_t y = this->_yOffset; y < this->_yOffset + HEIGHT; y++)
+	{
+		for (uint16_t x = 0; x < this->_xOffset; x++)
+		{
+			this->SetPixelNoOffset(x, y, convertedColor);
+		}
+
+		for (uint16_t x = this->_xOffset + WIDTH; x < H_SIZE; x++)
+		{
+			this->SetPixelNoOffset(x, y, convertedColor);
+		}
+	}
+
+	for (uint16_t y = this->_yOffset + HEIGHT; y < (this->_yOffset * 2) + HEIGHT; y++)
+	{
+		for (uint16_t x = 0; x < H_SIZE; x++)
+		{
+			this->SetPixelNoOffset(x, y, convertedColor);
+		}
+	}
 }
 
 }

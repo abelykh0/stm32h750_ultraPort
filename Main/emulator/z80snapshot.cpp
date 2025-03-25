@@ -3,9 +3,10 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "Emulator/z80main.h"
-#include "Emulator/z80emu/z80emu.h"
-#include "Emulator/SpectrumScreen.h"
+#include "emulator.h"
+#include "emulator/z80main.h"
+#include "emulator/z80emu/z80emu.h"
+#include "emulator/SpectrumScreen.h"
 
 /*
  Offset  Length  Description
@@ -532,8 +533,8 @@ void ReadState(FileHeader* header)
 	_zxCpu.iff2 = header->IFF2;
 	_zxCpu.pc = header->PC;
 
-	//uint8_t borderColor = (header->Flags1 & 0x0E) >> 1;
-	//*_spectrumScreen->Settings.BorderColor = _spectrumScreen->FromSpectrumColor(borderColor) >> 8;
+	uint8_t borderColor = (header->Flags1 & 0x0E) >> 1;
+	MainScreen.WriteBorderColor(borderColor);
 }
 
 void SaveState(FileHeader* header)
@@ -565,7 +566,7 @@ void SaveState(FileHeader* header)
 	// Bit 0  : Bit 7 of the R-register
 	// Bit 1-3: Border color
 	header->Flags1 = (_zxCpu.r & 0x80) >> 7;
-	uint8_t border = 0; //_spectrumScreen->ToSpectrumColor(*_spectrumScreen->Settings.BorderColor);
+	uint8_t border = MainScreen.ReadBorderColor();
 	header->Flags1 |= (border & 0x38) >> 2;
 
 	// Bit 0-1: Interrupt mode (0, 1 or 2)

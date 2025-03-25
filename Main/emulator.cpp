@@ -23,12 +23,6 @@ Display::Screen DebugScreen(0, SCREEN_Y_OFFSET, H_SIZE, V_SIZE - SCREEN_Y_OFFSET
 static bool _showingKeyboard;
 static bool _helpShown;
 
-// Spectrum video RAM + border color
-static SpectrumScreenData _spectrumScreenData;
-
-// Used in saveState / restoreState
-static SpectrumScreenData* _savedScreenData = (SpectrumScreenData*)&_buffer16K_2[0x4000 - sizeof(SpectrumScreenData)];
-
 void startVideo()
 {
 	DebugScreen.Clear();
@@ -59,7 +53,7 @@ void showKeyboardSetup()
 	DebugScreen.PrintAlignCenter(2, "Press any key to return");
 
 	videoRam.ShowScreenshot(spectrumKeyboard);
-	//_spectrumScreenData.BorderColor = 0; // Black
+	MainScreen.WriteBorderColor(0); // Black
 }
 
 bool showKeyboardLoop()
@@ -131,14 +125,14 @@ void restoreHelp()
 
 void saveState()
 {
-	*_savedScreenData = _spectrumScreenData;
+	videoRam.SaveScreenData(_buffer16K_2);
 }
 
 void restoreState(bool restoreScreen)
 {
 	if (restoreScreen)
 	{
-		_spectrumScreenData = *_savedScreenData;
+		videoRam.RestoreScreenData(_buffer16K_2);
 	}
 
 	restoreHelp();
