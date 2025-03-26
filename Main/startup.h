@@ -8,6 +8,7 @@ extern "C" {
 void initialize();
 void setup();
 void loop();
+void onHardFault();
 
 #ifdef __cplusplus
 }

@@ -15,6 +15,13 @@
 #define ATTR_WIDTH 32
 #define ATTR_HEIGHT 24
 
+
+typedef struct
+{
+	uint8_t  videoRam[6912 + 768];
+	uint8_t  BorderColor;
+} SpectrumScreenData;
+
 namespace z80
 {
 
@@ -27,11 +34,11 @@ private:
 	// 0x5800..0x5aff (768 bytes)
 	uint8_t _attributes[768];
 
-	SpectrumScreen _screen;
+	SpectrumScreen* _screen;
 
 public:
 
-	VideoRam();
+	VideoRam(SpectrumScreen* screen);
 
 	void ShowScreenshot(const uint8_t* screenshot);
 	void SaveScreenData(uint8_t* buffer);

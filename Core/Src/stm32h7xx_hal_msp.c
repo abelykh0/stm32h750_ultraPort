@@ -76,7 +76,7 @@ void HAL_MspInit(void)
   /* USER CODE BEGIN MspInit 1 */
 
   /* USER CODE END MspInit 1 */
- }
+}
 
 /* USER CODE BEGIN 1 */
 

@@ -29,7 +29,7 @@ void SpectrumScreen::Update8Pixels(VideoRam* videoRam, uint16_t address)
 	{
     	uint8_t color;
     	bool pixel = ((line << i) & 0x80) != 0;
-    	if (this->_flashOn && ((sinclairAttribute & 0x08) != 0))
+    	if (this->_flashOn && ((sinclairAttribute & 0x80) != 0))
     	{
     		pixel = !pixel;
     	}

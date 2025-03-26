@@ -37,7 +37,7 @@ FRESULT mount()
 
 void unmount()
 {
-	f_mount(&SDFatFS, (TCHAR const*)SDPath, 0);
+	f_mount(nullptr, (TCHAR const*)SDPath, 1);
 
 	// turn off built-in LED
 	HAL_GPIO_WritePin(LED_R_GPIO_Port, LED_R_Pin, GPIO_PIN_RESET);

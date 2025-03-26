@@ -105,6 +105,13 @@ extern "C" void loop()
 	}
 }
 
+extern "C" void onHardFault()
+{
+	fullScreen.Clear();
+	fullScreen.SetAttribute(0x0310); // red on blue
+	fullScreen.PrintAlignCenter(11, "HARD FAULT, HALTED");
+}
+
 extern "C" void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 	// Can't do it, will hang, it is using HAL_Delay
 	//MX_USB_HOST_Process();

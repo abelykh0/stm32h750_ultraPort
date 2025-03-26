@@ -3,8 +3,9 @@
 
 using namespace z80;
 
-VideoRam::VideoRam()
+VideoRam::VideoRam(SpectrumScreen* screen)
 {
+	this->_screen = screen;
 }
 
 void VideoRam::ShowScreenshot(const uint8_t* screenshot)
@@ -59,7 +60,7 @@ void VideoRam::WriteByte(uint16_t address, uint8_t value)
         this->_attributes[address - ATTRIBUTES_START] = value;
 
         // Update 8x8 pixels square
-        this->_screen.Update(this, address);
+        this->_screen->Update(this, address);
     }
     else if (address >= PIXELS_START)
     {
@@ -67,7 +68,7 @@ void VideoRam::WriteByte(uint16_t address, uint8_t value)
         this->_pixels[address - PIXELS_START] = value;
 
         // update 8 pixels
-        this->_screen.Update(this, address);
+        this->_screen->Update(this, address);
     }
 
 	// outside of video RAM
@@ -82,14 +83,14 @@ void VideoRam::WriteWord(uint16_t address, uint16_t value)
 void VideoRam::SaveScreenData(uint8_t* buffer)
 {
 	SpectrumScreenData* data = (SpectrumScreenData*)buffer;
-	data->BorderColor = this->_screen.ReadBorderColor();
+	data->BorderColor = this->_screen->ReadBorderColor();
 	memcpy(data->videoRam, this->_pixels, sizeof(this->_pixels));
-	memcpy((uint8_t*)data->videoRam + sizeof(this->_pixels), this->_attributes, sizeof(this->_attributes));
+	memcpy(data->videoRam + sizeof(this->_pixels), this->_attributes, sizeof(this->_attributes));
 }
 
 void VideoRam::RestoreScreenData(uint8_t* buffer)
 {
 	SpectrumScreenData* data = (SpectrumScreenData*)buffer;
-	this->_screen.WriteBorderColor(data->BorderColor);
+	this->_screen->WriteBorderColor(data->BorderColor);
 	this->ShowScreenshot(data->videoRam);
 }

@@ -8,12 +8,6 @@ namespace z80
 
 class VideoRam;
 
-typedef struct
-{
-	uint8_t  videoRam[6912 + 768];
-	uint8_t  BorderColor;
-} SpectrumScreenData;
-
 class SpectrumScreen: public Display::Screen
 {
 private:
