@@ -107,9 +107,12 @@ extern "C" void loop()
 
 extern "C" void onHardFault()
 {
-	fullScreen.Clear();
-	fullScreen.SetAttribute(0x0310); // red on blue
-	fullScreen.PrintAlignCenter(11, "HARD FAULT, HALTED");
+	uint32_t cfsr = SCB->CFSR; // Configurable Fault Status Register
+	uint32_t hfsr = SCB->HFSR; // Hard Fault Status Register
+	uint32_t mmfar = SCB->MMFAR; // Memory Management Fault Address
+	uint32_t bfar = SCB->BFAR; // Bus Fault Address
+	char buffer[20];
+	sprintf(buffer, "%08lX", hfsr);
 }
 
 extern "C" void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
