@@ -19,7 +19,7 @@ uint8_t _buffer16K_2[0x4000];
 static uint8_t* _savedScreenData = &_buffer16K_2[0x2100];
 
 z80::SpectrumScreen MainScreen;
-
+z80::VideoRam videoRam(&MainScreen);
 Display::Screen DebugScreen(0, SCREEN_Y_OFFSET, H_SIZE, V_SIZE - SCREEN_Y_OFFSET);
 
 static bool _showingKeyboard;

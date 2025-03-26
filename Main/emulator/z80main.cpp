@@ -17,7 +17,6 @@
 //Sound::Ay3_8912_state _ay3_8912;
 uint8_t RamBuffer[RAM_AVAILABLE];
 Z80_STATE _zxCpu;
-z80::VideoRam videoRam(&MainScreen);
 
 static CONTEXT _zxContext;
 static uint16_t _attributeCount;
