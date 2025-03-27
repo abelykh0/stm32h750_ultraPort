@@ -1,6 +1,8 @@
 #ifndef __STARTUP_H__
 #define __STARTUP_H__
 
+#include "stdbool.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -8,7 +10,7 @@ extern "C" {
 void initialize();
 void setup();
 void loop();
-void onHardFault();
+bool onHardFault();
 
 #ifdef __cplusplus
 }

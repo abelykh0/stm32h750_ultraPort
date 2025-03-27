@@ -105,7 +105,7 @@ extern "C" void loop()
 	}
 }
 
-extern "C" void onHardFault()
+extern "C" bool onHardFault()
 {
 	uint32_t cfsr = SCB->CFSR; // Configurable Fault Status Register
 	uint32_t hfsr = SCB->HFSR; // Hard Fault Status Register
@@ -113,6 +113,7 @@ extern "C" void onHardFault()
 	uint32_t bfar = SCB->BFAR; // Bus Fault Address
 	char buffer[20];
 	sprintf(buffer, "%08lX", hfsr);
+	return true;
 }
 
 extern "C" void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
