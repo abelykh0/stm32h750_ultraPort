@@ -18,8 +18,8 @@
 
 typedef struct _spectrumScreenData
 {
-	uint8_t  BorderColor;
 	uint8_t  videoRam[0x1800 + 0x300];
+	uint8_t  BorderColor;
 } SpectrumScreenData;
 
 namespace z80

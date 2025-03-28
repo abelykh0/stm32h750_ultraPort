@@ -137,12 +137,7 @@ bool z80::SaveZ80Snapshot(FIL* file, uint8_t buffer1[0x4000], uint8_t buffer2[0x
 			buffer = buffer2;
 
 			// 0x4000..0x5AFF
-			//memcpy(buffer, _spectrumScreen->Settings.Pixels, _spectrumScreen->_pixelCount);
-			//for (uint32_t i = 0; i < _spectrumScreen->_attributeCount; i++)
-			//{
-			//	buffer[_spectrumScreen->_pixelCount + i] = _spectrumScreen->ToSpectrumColor(
-			//			_spectrumScreen->Settings.Attributes[i]);
-			//}
+			videoRam.SaveScreenData(buffer);
 
 			// 0x5B00..0x7FFF
 			memcpy(&buffer[0x1B00], RamBuffer, 0x2500);
