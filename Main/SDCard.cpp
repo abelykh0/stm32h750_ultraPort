@@ -53,15 +53,14 @@ TCHAR* TruncateFileName(TCHAR* fileName)
 {
 	int maxLength = FILE_COLUMNWIDTH - 1;
 	TCHAR* result = (TCHAR*) _buffer16K_1;
-	strncpy(result, fileName, maxLength);
-
-	result[maxLength - 1] = '\0';
+	strncpy(result, fileName, _MAX_LFN);
 	TCHAR* extension = strrchr(result, '.');
 	if (extension != nullptr)
 	{
 		*extension = '\0';
 	}
 
+	result[maxLength - 1] = '\0';
 	return result;
 }
 
