@@ -16,10 +16,10 @@
 #define ATTR_HEIGHT 24
 
 
-typedef struct
+typedef struct _spectrumScreenData
 {
-	uint8_t  videoRam[6912 + 768];
 	uint8_t  BorderColor;
+	uint8_t  videoRam[0x1800 + 0x300];
 } SpectrumScreenData;
 
 namespace z80
@@ -28,8 +28,8 @@ namespace z80
 class VideoRam: public z80::Ram
 {
 private:
-	// 0x4000..0x57ff (6,912 bytes)
-	uint8_t _pixels[6912];
+	// 0x4000..0x57ff (6,144 bytes)
+	uint8_t _pixels[0x1800];
 
 	// 0x5800..0x5aff (768 bytes)
 	uint8_t _attributes[768];
