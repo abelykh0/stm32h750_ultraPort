@@ -201,7 +201,7 @@ bool saveSnapshotSetup()
 
 	DebugScreen.PrintAt(0, 2, "Enter file name:");
 	DebugScreen.SetCursorPosition(0, 3);
-	//DebugScreen.ShowCursor();
+	DebugScreen.ShowCursor();
 	memset(_snapshotName, 0, _MAX_LFN + 1);
 	_savingSnapshot = true;
 
@@ -235,7 +235,7 @@ bool saveSnapshotLoop()
 
 	case KEY_ENTER:
 	case KEY_KEYPAD_ENTER:
-		//DebugScreen.HideCursor();
+		DebugScreen.HideCursor();
 		DebugScreen.PrintAt(0, 5, "Saving...                  ");
 		strcat(_snapshotName,".z80");
 		if (saveSnapshot(_snapshotName))
@@ -250,7 +250,7 @@ bool saveSnapshotLoop()
 			DebugScreen.PrintAt(0, 5, "Error saving file");
 			DebugScreen.SetAttribute(0x3F10); // white on blue
 			DebugScreen.SetCursorPosition(x, 3);
-			//DebugScreen.ShowCursor();
+			DebugScreen.ShowCursor();
 		}
 		break;
 

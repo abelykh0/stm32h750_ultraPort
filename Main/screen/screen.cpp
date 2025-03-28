@@ -61,8 +61,18 @@ void Screen::SetCursorPosition(uint8_t x, uint8_t y)
 		y = this->_textRows - 1;
 	}
 
+    if (this->_isCursorVisible)
+    {
+    	this->InvertColor();
+    }
+
 	this->_cursor_x = x;
 	this->_cursor_y = y;
+
+    if (this->_isCursorVisible)
+    {
+    	this->InvertColor();
+    }
 }
 
 void Screen::Print(const char* str)
@@ -197,6 +207,18 @@ void Screen::SetPixel(uint16_t x, uint16_t y, uint8_t c)
 	VideoRam[offset] = c;
 }
 
+uint8_t Screen::GetPixel(uint16_t x, uint16_t y)
+{
+	uint32_t offset = (H_SIZE * (this->_yOffset + y)) + (this->_xOffset + x);
+	if (offset >= H_SIZE * V_SIZE)
+	{
+		// out of screen area
+		return 0;
+	}
+
+	return VideoRam[offset];
+}
+
 void Screen::SetPixelNoOffset(uint16_t x, uint16_t y, uint8_t c)
 {
 	uint32_t offset = (H_SIZE * y) + x;
@@ -207,6 +229,52 @@ void Screen::SetPixelNoOffset(uint16_t x, uint16_t y, uint8_t c)
 	}
 
 	VideoRam[offset] = c;
+}
+
+void Screen::ShowCursor()
+{
+    if (!this->_isCursorVisible)
+    {
+    	this->_isCursorVisible = true;
+    	this->InvertColor();
+    }
+}
+
+void Screen::HideCursor()
+{
+    if (this->_isCursorVisible)
+    {
+    	this->_isCursorVisible = false;
+    	this->InvertColor();
+    }
+}
+
+void Screen::InvertColor()
+{
+	uint8_t foregroundColor = this->_attribute >> 8;
+	uint8_t backgroundColor = this->_attribute & 0xff;
+
+    for (int i = 0; i < 8; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+        	uint16_t pixelX = this->_cursor_x * 8 + j;
+        	uint16_t pixelY = this->_cursor_y * 8 + i;
+
+			uint8_t currentColor = this->GetPixel(pixelX, pixelY);
+			uint8_t newColor;
+			if (currentColor == backgroundColor)
+			{
+				newColor = foregroundColor;
+			}
+			else
+			{
+				newColor = backgroundColor;
+			}
+
+			this->SetPixel(pixelX, pixelY, newColor);
+        }
+    }
 }
 
 }
