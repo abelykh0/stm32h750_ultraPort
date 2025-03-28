@@ -260,7 +260,7 @@ bool saveSnapshotLoop()
 		return false;
 
 	default:
-		char character = '0'; //Ps2_ConvertScancode(scanCode);
+		char character = GetAsciiCode();
 		if (DebugScreen._cursor_x < FILE_COLUMNWIDTH && character != '\0'
 			&& character != '\\' && character != '/' && character != ':'
 			&& character != '*' && character != '?' && character != '"'
