@@ -3,12 +3,11 @@
 
 #include "gpio.h"
 #include "spi.h"
-#include "tim.h"
-#include "usb_host.h"
-#include "usbh_hid.h"
+//#include "usb_host.h"
+//#include "usbh_hid.h"
 
 #include "w25qxx_qspi.h"
-#include "fatfs.h"
+//#include "fatfs.h"
 #include "config.h"
 #include "emulator.h"
 #include "sdcard.h"
@@ -40,8 +39,6 @@ extern "C" void setup()
 	HAL_PWREx_EnableUSBVoltageDetector();
 
 	fullScreen.Clear();
-
-	HAL_TIM_Base_Start_IT(&htim1);
 
 	//videoRam.ShowScreenshot((uint8_t*)QSPI_BASE);
 	zx_setup();
@@ -114,11 +111,6 @@ extern "C" bool onHardFault()
 	char buffer[20];
 	sprintf(buffer, "%08lX", hfsr);
 	return true;
-}
-
-extern "C" void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
-	// Can't do it, will hang, it is using HAL_Delay
-	//MX_USB_HOST_Process();
 }
 
 static void MapFlash()

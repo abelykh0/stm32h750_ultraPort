@@ -2,9 +2,10 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-#include "usbh_hid.h"
-#include "usb_host.h"
+//#include "usbh_hid.h"
+//#include "usb_host.h"
 
+#include "main.h"
 #include "SDCard.h"
 #include "screen.h"
 #include "emulator.h"
@@ -13,6 +14,11 @@
 
 #define FILE_COLUMNS 3
 #define FILE_COLUMNWIDTH (TEXT_COLUMNS / FILE_COLUMNS)
+
+#define TCHAR char
+#define _MAX_LFN 255
+#define FRESULT uint8_t
+#define FR_OK 0
 
 typedef TCHAR FileName[_MAX_LFN + 1];
 
@@ -25,6 +31,7 @@ static bool _savingSnapshot = false;
 
 FRESULT mount()
 {
+/*
 	FRESULT result = f_mount(&SDFatFS, (const TCHAR*) SDPath, 1);
 	if (result == FR_OK)
 	{
@@ -33,11 +40,15 @@ FRESULT mount()
 	}
 
 	return result;
+*/
+	return 1;
 }
 
 void unmount()
 {
+/*
 	f_mount(nullptr, (TCHAR const*)SDPath, 1);
+*/
 
 	// turn off built-in LED
 	HAL_GPIO_WritePin(LED_R_GPIO_Port, LED_R_Pin, GPIO_PIN_RESET);
@@ -74,6 +85,7 @@ void noScreenshot()
 
 void SetSelection(uint8_t selectedFile)
 {
+/*
 	if (_fileCount == 0)
 	{
 		return;
@@ -130,10 +142,12 @@ void SetSelection(uint8_t selectedFile)
 
 		unmount();
 	}
+*/
 }
 
 void loadSnapshot(const TCHAR* fileName)
 {
+/*
 	FRESULT fr = mount();
 	if (fr == FR_OK)
 	{
@@ -144,11 +158,13 @@ void loadSnapshot(const TCHAR* fileName)
 
 		unmount();
 	}
+*/
 }
 
 bool saveSnapshot(const TCHAR* fileName)
 {
 	bool result = false;
+/*
 	FRESULT fr = mount();
 	if (fr == FR_OK)
 	{
@@ -163,7 +179,7 @@ bool saveSnapshot(const TCHAR* fileName)
 
 		unmount();
 	}
-
+*/
 	return result;
 }
 
@@ -279,6 +295,7 @@ bool saveSnapshotLoop()
 
 bool loadSnapshotSetup()
 {
+/*
 	saveState();
 
 	DebugScreen.SetAttribute(0x3F10); // white on blue
@@ -353,6 +370,8 @@ bool loadSnapshotSetup()
 	}
 
 	return result;
+*/
+	return false;
 }
 
 bool loadSnapshotLoop()

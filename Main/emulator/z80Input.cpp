@@ -1,5 +1,5 @@
 #include "z80input.h"
-#include "usbh_hid.h"
+#include "keyboard/hid_keyboard.h"
 
 uint8_t indata[128];
 

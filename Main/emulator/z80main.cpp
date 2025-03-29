@@ -3,7 +3,7 @@
 #include "startup.h"
 
 #include "stm32h7xx_hal.h"
-#include "usb_host.h"
+//#include "usb_host.h"
 
 #include "z80main.h"
 #include "z80input.h"
@@ -89,7 +89,7 @@ int32_t zx_loop()
         // delay
         while (HAL_GetTick() < _ticks)
         {
-            MX_USB_HOST_Process();
+            //MX_USB_HOST_Process();
         }
 
 		_ticks += 20; // 50 frames per second
