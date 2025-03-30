@@ -3,6 +3,8 @@
 
 #include "screen.h"
 #include "emulator/SpectrumScreen.h"
+#include "fatfs.h"
+#include "screen.h"
 
 #define DEBUG_COLUMNS (H_SIZE / 8)
 #define SCREEN_Y_OFFSET 256

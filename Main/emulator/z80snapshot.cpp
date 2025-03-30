@@ -107,9 +107,8 @@ void ReadState(FileHeader* header);
 void SaveState(FileHeader* header);
 void GetPageInfo(uint8_t* buffer, bool is128Mode, uint8_t pagingState, uint8_t* pageNumber, uint16_t* pageSize);
 
-bool z80::SaveZ80Snapshot(FX_FILE* file, uint8_t buffer1[0x4000], uint8_t buffer2[0x4000])
+bool z80::SaveZ80Snapshot(FIL* file, uint8_t buffer1[0x4000], uint8_t buffer2[0x4000])
 {
-/*
 	// Note: this requires little-endian processor
 	FileHeader* header = (FileHeader*)buffer1;
 	SaveState(header);
@@ -192,13 +191,12 @@ bool z80::SaveZ80Snapshot(FX_FILE* file, uint8_t buffer1[0x4000], uint8_t buffer
 			buffer += bytesWritten;
 		} while (writeResult == FR_OK && remainingBytesInPage > 0);
 	}
-*/
+
 	return true;
 }
 
-bool z80::LoadZ80Snapshot(FX_FILE* file, uint8_t buffer1[0x4000], uint8_t buffer2[0x4000])
+bool z80::LoadZ80Snapshot(FIL* file, uint8_t buffer1[0x4000], uint8_t buffer2[0x4000])
 {
-/*
 	UINT bytesRead;
 	UINT bytesToRead;
 
@@ -319,13 +317,12 @@ bool z80::LoadZ80Snapshot(FX_FILE* file, uint8_t buffer1[0x4000], uint8_t buffer
 		}
 
 	} while (pageSize > 0);
-*/
+
 	return true;
 }
 
-bool z80::LoadScreenFromZ80Snapshot(FX_FILE* file, uint8_t buffer1[0x4000])
+bool z80::LoadScreenFromZ80Snapshot(FIL* file, uint8_t buffer1[0x4000])
 {
-/*
 	UINT bytesRead;
 
 	FRESULT readResult = f_read(file, buffer1, sizeof(FileHeader), &bytesRead);
@@ -428,13 +425,12 @@ bool z80::LoadScreenFromZ80Snapshot(FX_FILE* file, uint8_t buffer1[0x4000])
 		}
 
 	} while (pageSize > 0);
-*/
+
 	return true;
 }
 
-bool z80::LoadScreenshot(FX_FILE* file, uint8_t buffer1[0x4000])
+bool z80::LoadScreenshot(FIL* file, uint8_t buffer1[0x4000])
 {
-/*
 	FRESULT readResult;
 	UINT bytesRead;
 	int remainingBytes = 6912;
@@ -454,7 +450,6 @@ bool z80::LoadScreenshot(FX_FILE* file, uint8_t buffer1[0x4000])
 	} while (remainingBytes > 0);
 
 	videoRam.ShowScreenshot(buffer1);
-*/
 	return true;
 }
 

@@ -10,7 +10,6 @@ extern "C" {
 void initialize();
 void setup();
 void loop();
-
 bool onHardFault();
 
 #ifdef __cplusplus
