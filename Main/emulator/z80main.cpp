@@ -87,6 +87,11 @@ int32_t zx_loop()
         Z80Interrupt(&_zxCpu, 0xff, &_zxContext);
 
         // delay
+        uint32_t currentTicks = HAL_GetTick();
+        if (_ticks < currentTicks)
+        {
+        	_ticks = currentTicks;
+        }
         while (HAL_GetTick() < _ticks)
         {
         }
