@@ -90,7 +90,7 @@ void toggleHelp()
 
 void clearHelp()
 {
-	//DebugScreen.HideCursor();
+	DebugScreen.HideCursor();
 	DebugScreen.SetAttribute(0x3F10); // white on blue
 	DebugScreen.Clear();
 
@@ -99,7 +99,7 @@ void clearHelp()
 
 void showHelp()
 {
-	//DebugScreen.HideCursor();
+	DebugScreen.HideCursor();
 	DebugScreen.SetAttribute(0x3F10); // white on blue
 	DebugScreen.Clear();
 
