@@ -12,7 +12,7 @@ uint8_t GetScanCode(bool wait)
 	{
 		while (lastScanCode == 0)
 		{
-			MX_USB_HOST_Process();
+			HAL_Delay(10);
 		}
 	}
 

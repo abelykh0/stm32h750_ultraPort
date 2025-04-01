@@ -41,7 +41,7 @@ extern "C" void setup()
 
 	fullScreen.Clear();
 
-	HAL_TIM_Base_Start_IT(&htim1);
+	HAL_TIM_Base_Start_IT(&htim7);
 
 	//videoRam.ShowScreenshot((uint8_t*)QSPI_BASE);
 	zx_setup();
@@ -105,6 +105,11 @@ extern "C" void loop()
 	}
 }
 
+extern "C" uint32_t HAL_GetTick(void)
+{
+  return uwTick;
+}
+
 extern "C" bool onHardFault()
 {
 	uint32_t cfsr = SCB->CFSR; // Configurable Fault Status Register
@@ -114,11 +119,6 @@ extern "C" bool onHardFault()
 	char buffer[20];
 	sprintf(buffer, "%08lX", hfsr);
 	return true;
-}
-
-extern "C" void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
-	// Can't do it, will hang, it is using HAL_Delay
-	//MX_USB_HOST_Process();
 }
 
 static void MapFlash()
